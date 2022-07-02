@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotExperiments
 {
@@ -21,13 +22,19 @@ namespace TelegramBotExperiments
                 var message = update.Message;
                 if (message.Text.ToLower() == "/start")
                 {
-                    await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать!");
+                    await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать!", replyMarkup: GetButtons());
                     return;
                 }
                 await botClient.SendTextMessageAsync(message.Chat, "Привет-привет!!");
             }
         }
-
+        private static IReplyMarkup GetButtons()
+        {
+            return new ReplyKeyboardMarkup(new List<List<KeyboardButton>>
+                {
+                    new List<KeyboardButton>{new KeyboardButton("Привет"), new KeyboardButton("Помощь")}
+                });
+        }
         public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             // Некоторые действия
